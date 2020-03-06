@@ -1,0 +1,26 @@
+.movieCard{
+    width: 250px;
+    /* height: 250px; */
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 5px;
+    position: relative;
+}
+.movieSatrs{
+    /* border-right: 1px solid black;
+    border-bottom: 1px solid black; */
+    width: fit-content;
+    /* position: absolute; */
+    /* margin: 0 auto 5px 0; */
+    /* right: -2px; */
+    /* height: fit-content; */
+}
+.movieDescription p{
+    margin: 0px;
+    font-size: small;
+}
+
+.movieCard:hover{
+    box-shadow: 0px 0px 21px 0px rgba(0,0,0,0.75);
+}
