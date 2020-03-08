@@ -10,42 +10,48 @@ Modal.setAppElement('#root')
 
 const customStyles = {
     content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
+      top                   : '20%',
+      left                  : '20%',
+      width                 : '50%',
+      height                : '50%'
     }
 }
 
 class AddMovie extends Component{
-    constructor (props){
-        super(props)
-        this.state = {
-            modalIsOpen : false,
-            newMovie : {
-                title: "",
-                synopsis: "",
-                img: "",
-                trailer: "",
-                rating: 0
-              }
-        }
-    }
-    componentDidMount(){
-      if(this.props.movieToEdit){
-        this.setState({ ...this.state , newMovie : this.props.movieToEdit})
+  state = {
+    modalIsOpen : false,
+    newMovie : {
+        title: "a",
+        synopsis: "",
+        img: "",
+        trailer: "",
+        rating: 0
       }
+  }
+    
+    componentDidMount(){
+      console.log("componentDidMount")
+      if(this.props.newMovie.id){
+        this.setState({ ...this.state , newMovie : this.props.newMovie})
+      }
+    }
+
+    static getDerivedStateFromProps(props, state) {
+      console.log("getDerivedStateFromProps")
+      if (!state.newMovie.id)
+        return { ...state , newMovie : props.newMovie};
+      return null
     }
 
 
    openModal=()=> {
-    this.setState({modalIsOpen : true})
+     this.props.openModal();
+    //this.setState({modalIsOpen : true})
   }
  
    closeModal=()=> {
-       this.setState({modalIsOpen : false})
+     this.props.closeModal();
+       //this.setState({modalIsOpen : false})
   }
 
   changeMovieTitle=(e)=>{
@@ -65,7 +71,7 @@ class AddMovie extends Component{
   }
   saveNewMovie=()=>{
     if (this.state.newMovie.title && this.state.newMovie.trailer){
-      {this.state.newMovie.id ? this.props.editMovie(this.state.newMovie): this.props.addMovie(this.state.newMovie)} 
+      {this.state.newMovie.id ? this.props.editMovie(this.state.newMovie) : this.props.addMovie(this.state.newMovie)} 
       this.setState({newMovie: {
         title: "",
         synopsis: "",
@@ -78,12 +84,14 @@ class AddMovie extends Component{
     else alert('Movie should have at least a "Title" and a "Trailer" ' )
     }
 
+
+
   render(){
     return (
       <div className="addMovie">
         <svg style={{margin : "60px"}} onClick={this.openModal} height="100px" viewBox="0 0 448 448" width="100px" xmlns="http://www.w3.org/2000/svg"><path d="m408 184h-136c-4.417969 0-8-3.582031-8-8v-136c0-22.089844-17.910156-40-40-40s-40 17.910156-40 40v136c0 4.417969-3.582031 8-8 8h-136c-22.089844 0-40 17.910156-40 40s17.910156 40 40 40h136c4.417969 0 8 3.582031 8 8v136c0 22.089844 17.910156 40 40 40s40-17.910156 40-40v-136c0-4.417969 3.582031-8 8-8h136c22.089844 0 40-17.910156 40-40s-17.910156-40-40-40zm0 0"/></svg>
         <Modal
-          isOpen={this.state.modalIsOpen}
+          isOpen={this.props.modalIsOpen}
           onRequestClose={this.closeModal}
           style={customStyles}
           contentLabel="Example Modal"

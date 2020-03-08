@@ -56,11 +56,11 @@ const movieReducer = (state = initialState,{type,payload})=>{
                 ratingSearch : payload,
                 result : state.movies.filter(el => ( (el.title.toLowerCase().indexOf(state.inputSearch.toLowerCase()) !== -1 || el.synopsis.toLowerCase().indexOf(state.inputSearch.toLowerCase()) !== -1) && (el.rating >= payload ) ) )
             }
-        // case EDIT_MOVIE:
-        //     return {
-        //         ...state,
-        //         movies : state.movies.map(el=>el.id===payload.id ? payload : el)
-        //     }
+        case EDIT_MOVIE:
+            return {
+                ...state,
+                movies : state.movies.map(el=>el.id===payload.id ? payload : el)
+            }
         default : return state
     }
 
