@@ -19,9 +19,8 @@ const customStyles = {
 
 class AddMovie extends Component{
   state = {
-    modalIsOpen : false,
     newMovie : {
-        title: "a",
+        title: "",
         synopsis: "",
         img: "",
         trailer: "",
@@ -29,18 +28,21 @@ class AddMovie extends Component{
       }
   }
     
-    componentDidMount(){
-      console.log("componentDidMount")
-      if(this.props.newMovie.id){
-        this.setState({ ...this.state , newMovie : this.props.newMovie})
-      }
-    }
+    // componentDidMount(){
+    //   console.log("componentDidMount")
+    //   if(this.props.newMovie.id){
+    //     console.log("componentDidMount action")
+    //     this.setState({ ...this.state , newMovie : this.props.newMovie})
+    //   }
+    // }
 
     static getDerivedStateFromProps(props, state) {
       console.log("getDerivedStateFromProps")
-      if (!state.newMovie.id)
+      if (!state.newMovie.id && !state.newMovie.title){
         return { ...state , newMovie : props.newMovie};
-      return null
+      }
+      //console.log("state",state)
+      else return state
     }
 
 
@@ -51,34 +53,24 @@ class AddMovie extends Component{
  
    closeModal=()=> {
      this.props.closeModal();
-       //this.setState({modalIsOpen : false})
-  }
-
-  changeMovieTitle=(e)=>{
-    this.setState({newMovie: {...this.state.newMovie, title : e.target.value}})
-  }
-  changeMovieSynopsis=(e)=>{
-      this.setState({newMovie: {...this.state.newMovie, synopsis : e.target.value}})
-  }
-  changeMovieImg=(e)=>{
-      this.setState({newMovie: {...this.state.newMovie, img : e.target.value}})
-  }
-  changeMovieTrailer=(e)=>{
-      this.setState({newMovie: {...this.state.newMovie, trailer : e.target.value}})
+     this.setState({newMovie: {
+      title: "",
+      synopsis: "",
+      img: "",
+      trailer: "",
+      rating: 0
+    }})
   }
   changeMovieRating = (value)=>{
       this.setState({newMovie: {...this.state.newMovie, rating : value}})
   }
+  changeHandel =(e,type)=>{
+    this.setState({newMovie: {...this.state.newMovie, [type] : e.target.value}})
+  }
   saveNewMovie=()=>{
     if (this.state.newMovie.title && this.state.newMovie.trailer){
       {this.state.newMovie.id ? this.props.editMovie(this.state.newMovie) : this.props.addMovie(this.state.newMovie)} 
-      this.setState({newMovie: {
-        title: "",
-        synopsis: "",
-        img: "",
-        trailer: "",
-        rating: 0
-      }})
+      
       this.closeModal()
     }
     else alert('Movie should have at least a "Title" and a "Trailer" ' )
@@ -94,18 +86,17 @@ class AddMovie extends Component{
           isOpen={this.props.modalIsOpen}
           onRequestClose={this.closeModal}
           style={customStyles}
-          contentLabel="Example Modal"
         >
  
           <h2>Add a new movie</h2>
             <label>Title :</label>
-            <input type="text" className="title" value={this.state.newMovie.title} onChange={this.changeMovieTitle}/><br/>
+            <input type="text" className="title" value={this.state.newMovie.title} onChange={(e)=>this.changeHandel(e,'title')}/><br/>
             <label>Poster link :</label>
-            <input type="text" name="poster" value={this.state.newMovie.img} onChange={this.changeMovieImg}/><br/>
+            <input type="text" name="poster" value={this.state.newMovie.img} onChange={(e)=>this.changeHandel(e,'img')}/><br/>
             <label>Synopsis :</label>
-            <input type="text" name="synopsis" value={this.state.newMovie.synopsis} onChange={this.changeMovieSynopsis}/><br/>
+            <input type="text" name="synopsis" value={this.state.newMovie.synopsis} onChange={(e)=>this.changeHandel(e,'synopsis')}/><br/>
             <label>Trailer link :</label>
-            <input type="text" name="trailer" value={this.state.newMovie.trailer} onChange={this.changeMovieTrailer}/><br/>
+            <input type="text" name="trailer" value={this.state.newMovie.trailer} onChange={(e)=>this.changeHandel(e,'trailer')}/><br/>
             <div className="newMovieRating">
                 <label>Rating : </label>
                 <div><RatingStars rating={0} getRating={this.changeMovieRating}/></div>

@@ -7,24 +7,25 @@ import {Link} from 'react-router-dom'
 
 function Movie({movie,deleteMovie,openModal}) {
     return (
-        <Link to={`/description/${movie.id}`} className="movieCard">
+        <div className='movieCard' key={movie.id}>
                 {movie.rating ?
                 <div className="movieSatrs">
                     <RatingStars rating={movie.rating}/>
                 </div>
                 :null
                 }
-                <img src={movie.img}/>
+                <img src={movie.img} alt={movie.title}/>
                 <hr/>
                 <div className="movieDescription">
-                    <p>Title : <a href={`https://www.google.com/search?q=movie+${movie.title}`} target="_blank">{movie.title}</a></p>
+                    <p>Title : <a href={`https://www.google.com/search?q=movie+${movie.title}`} target="_blank" rel="noopener noreferrer">{movie.title}</a></p>
                     {movie.synopsis ? <p>Synopsis : {movie.synopsis}</p> :null}
                 </div>
                 <div>
                     <button onClick={()=>openModal(movie)} >Edit</button>
                     <button onClick={()=>deleteMovie(movie.id)} style={{marginLeft : '5px'}} >Delete</button>
+                    <Link to={`/description/${movie.id}`}> <button>Trailer</button> </Link>
                 </div>
-        </Link>
+        </div>
     )
 }
 export default connect(null,{editMovie,deleteMovie})(Movie);

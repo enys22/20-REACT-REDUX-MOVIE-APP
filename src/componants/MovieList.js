@@ -36,7 +36,6 @@ class MovieList extends Component {
             <>
             <div className='moviesList'>
                 {((this.props.ratingSearch || this.props.inputSearch.length!==0) ? this.props.result : this.props.movies ).map((movieItem,i) => <Movie movie={movieItem} openModal={this.openModal}/>)}
-                
             </div>
             <div className="movieCard">
                 <AddMovie newMovie={this.state.newMovie} /*editMovie={this.props.editMovie}*/ modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal} openModal={this.openModal} />
